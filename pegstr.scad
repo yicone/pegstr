@@ -61,10 +61,10 @@ holder_angle = 0.0;
 holder_sides = max(50, min(20, holder_x_size * 2));
 
 // dimensions the same outside US?
-hole_spacing = 25.4;
-hole_size = 6; // 6.0035;
-board_thickness = 5;
-
+hole_spacing = 25; // 25.4;
+hole_size = 6;     // 6.35;
+hole_epsilon_factor = 0.95;
+board_thickness = 3;
 
 holder_total_x =
   wall_thickness + holder_x_count * (wall_thickness + holder_x_size);
@@ -76,6 +76,7 @@ holder_roundness = min(corner_radius, holder_x_size / 2, holder_y_size / 2);
 // what is the $fn parameter for holders
 fn = 32;
 
+// precision tolerance
 epsilon = 0.1;
 
 clip_height = 2 * hole_size + 2;
@@ -128,7 +129,8 @@ old_pin(clip)
       // [-hole_size/2 - 1.95,0, board_thickness/2]
       translate([ 0, hole_size / 2 + 2, board_thickness / 2 ])
         rotate([ 0, 90, 0 ]) rotate_extrude(convexity = 5, $fn = 20)
-          translate([ 5, 0, 0 ]) circle(r = (hole_size * 0.95) / 2);
+          translate([ 5, 0, 0 ])
+            circle(r = (hole_size * hole_epsilon_factor) / 2);
 
       translate([ 0, hole_size / 2 + 2 - 1.6, board_thickness / 2 ])
         rotate([ 45, 0, 0 ]) translate([ 0, -0, hole_size * 0.6 ]) cube(

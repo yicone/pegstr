@@ -170,15 +170,21 @@ pin(clip)
 module
 pinboard_clips()
 {
-  rotate([ 0, 90, 0 ]) for (i = [0:round(holder_total_x / hole_spacing)])
+  pin_x_count = round(holder_total_x / hole_spacing) + 1;
+  pin_y_count = max(strength_factor, round(holder_height / hole_spacing)) + 1;
+  echo("pin_x_count, pin_y_count", pin_x_count, pin_y_count)
+    rotate([ 0, 90, 0 ]) for (i = [0:pin_x_count - 1])
   {
-    for (j = [0:max(strength_factor, round(holder_height / hole_spacing))]) {
+    for (j = [0:pin_y_count - 1]) {
       translate([
         j * hole_spacing,
         -hole_spacing * (round(holder_total_x / hole_spacing) / 2) +
           i * hole_spacing,
         0
-      ]) pin(j == 0);
+      ]) if (i == 0 || i == pin_x_count - 1)
+      {
+        pin(j == 0);
+      }
     }
   }
 }
